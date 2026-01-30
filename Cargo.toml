@@ -1,0 +1,4 @@
+
+[workspace]
+resolver = "3"
+members = ["ezine_core", "ezine", "ezine_server"]
