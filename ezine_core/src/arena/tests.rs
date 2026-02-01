@@ -1,5 +1,5 @@
 
-use super::{Arena, ArenaVec}; 
+use super::*; 
 
 #[test]
 fn hello_world() {
@@ -60,4 +60,24 @@ fn arena_vec() {
     }
     assert_eq!(vec.len(), 50);
     assert_eq!(vec.capacity(), 64);
+}
+
+#[test]
+fn string_builder() {
+    let arena = Arena::new();
+    let mut builder = ArenaStringBuilder::new(&arena);
+    builder.write("Hello, ");
+    builder.write("World!");
+    let result = builder.finish();
+    assert_eq!(result, "Hello, World!");
+}
+
+#[test]
+#[should_panic]
+fn interrupted_string_builder() {
+    let arena = Arena::new();
+    let mut builder = ArenaStringBuilder::new(&arena);
+    builder.write("Oh");
+    arena.alloc(123);
+    builder.write("No");
 }

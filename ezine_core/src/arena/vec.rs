@@ -105,3 +105,13 @@ impl<T: PartialEq> PartialEq for ArenaVec<'_, T> {
 }
 
 impl<T: Eq> Eq for ArenaVec<'_, T> {}
+
+impl<'arena, 'vec: 'arena, T> IntoIterator for &'vec ArenaVec<'arena, T> {
+    type Item = &'arena T;
+
+    type IntoIter = std::slice::Iter<'vec, T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.as_slice().iter()
+    }
+}
